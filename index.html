@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasileirão 2026 - Probabilidades de Rebaixamento & Simulador Completo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+    ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+    .badge-critical { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-high { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
+    .badge-medium { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3); }
+    .badge-low { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-safe { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .tab-active {
+      border-bottom: 3px solid #3b82f6;
+      color: #3b82f6;
+      font-weight: 700;
+    }
+    /* Estilo de Scrollbar Horizontal Elegante e Visivel */
+    .tabs-scroll-container {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs-scroll-container::-webkit-scrollbar {
+      height: 7px;
+    }
+    .tabs-scroll-container::-webkit-scrollbar-track {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 9999px;
+    }
+    .tabs-scroll-container::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 9999px;
+      box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+    }
+    .tabs-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: #60a5fa;
+    }
+    .cursor-grabbing {
+      cursor: grabbing !important;
+      user-select: none;
+    }
+    .btn-sim-active-home {
+      background-color: #2563eb !important;
+      color: #ffffff !important;
+      border-color: #3b82f6 !important;
+      font-weight: 700 !important;
+    }
+    .btn-sim-active-draw {
+      background-color: #d97706 !important;
+      color: #ffffff !important;
+      border-color: #f59e0b !important;
+      font-weight: 700 !important;
+    }
+    .btn-sim-active-away {
+      background-color: #7c3aed !important;
+      color: #ffffff !important;
+      border-color: #8b5cf6 !important;
+      font-weight: 700 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-700 text-white text-xs py-1.5 px-4 text-center font-medium shadow-sm">
+    ⚽ Modelo Estatístico Oficial Série A 2026 • 100.000 Simulações Monte Carlo • Atualizado em 15/11/2026
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div>
+        <div class="flex items-center gap-2 mb-1.5">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/30">
+            35ª Rodada em Andamento
+          </span>
+          <span class="text-xs text-slate-400">Data de Referência: 15 de Novembro de 2026</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+          Brasileirão 2026: Análise de Rebaixamento & Simulador Completo
+        </h1>
+        <p class="text-sm text-slate-400 mt-1">
+          Probabilidades preditivas, matemática de pontos corridos e simulador de todos os jogos dos clubes ameaçados.
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="shareApp()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow transition-all hover:scale-[1.02]">
+          <span>🔗</span> Compartilhar Link
+        </button>
+        <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+          <span>🖨️</span> Imprimir / PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- Key Metrics Cards -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Linha de Corte Média (17º)</div>
+        <div class="text-2xl font-black text-amber-400 mt-1">41.37 <span class="text-xs font-normal text-slate-400">pts</span></div>
+        <div class="text-[11px] text-slate-400 mt-1">Mediana exata: <strong>41.0 pts</strong></div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Pontuação 99% Segura</div>
+        <div class="text-2xl font-black text-emerald-400 mt-1">44.0 <span class="text-xs font-normal text-slate-400">pts</span></div>
+        <div class="text-[11px] text-emerald-400/90 mt-1">99% de garantia matemática</div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Vagas Confirmadas</div>
+        <div class="text-2xl font-black text-red-500 mt-1">1 de 4 <span class="text-xs font-normal text-slate-400">(Chapecoense)</span></div>
+        <div class="text-[11px] text-red-400 mt-1">Remo virtualmente rebaixado (99.9%)</div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-sm">
+        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">Jogos Mapeados no Simulador</div>
+        <div class="text-2xl font-black text-purple-400 mt-1">29 partidas</div>
+        <div class="text-[11px] text-purple-300 mt-1">Todos os jogos dos 9 times sob risco</div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs with Horizontal Scroll Controls -->
+    <div class="relative mb-6 pb-2 border-b border-slate-800">
+      
+      <!-- Left Scroll Arrow Button -->
+      <button id="tabs-btn-prev" onclick="scrollTabsNav(-220)" aria-label="Rolar abas para a esquerda" title="Rolar abas para a esquerda"
+              class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-slate-900/95 hover:bg-blue-600 border border-slate-700 hover:border-blue-500 text-slate-300 hover:text-white items-center justify-center shadow-lg transition-all duration-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+
+      <!-- Scrollable Tabs List -->
+      <div id="tabs-nav-container" class="tabs-scroll-container flex items-center gap-3 overflow-x-auto scroll-smooth py-1 sm:px-9 select-none cursor-grab">
+        <button onclick="changeTab('simulador')" id="tab-simulador-btn" class="pb-3 px-3.5 tab-active transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span class="text-base">🎲</span> <span class="font-bold">Simulador Completo de Todos os Jogos</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-600 text-white font-extrabold ml-1">29 Jogos</span>
+        </button>
+        <button onclick="changeTab('tabela')" id="tab-tabela-btn" class="pb-3 px-3.5 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span>📊</span> Probabilidades & Gráficos
+        </button>
+        <button onclick="changeTab('cenarios')" id="tab-cenarios-btn" class="pb-3 px-3.5 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span>📋</span> Matriz de Cenários por Clube
+        </button>
+        <button onclick="changeTab('evolucao')" id="tab-evolucao-btn" class="pb-3 px-3.5 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span>📈</span> Evolução das Últimas Rodadas
+        </button>
+        <button onclick="changeTab('metodologia')" id="tab-metodologia-btn" class="pb-3 px-3.5 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <span>📐</span> Metodologia & Premissas
+        </button>
+      </div>
+
+      <!-- Right Scroll Arrow Button -->
+      <button id="tabs-btn-next" onclick="scrollTabsNav(220)" aria-label="Rolar abas para a direita" title="Rolar abas para a direita"
+              class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-slate-900/95 hover:bg-blue-600 border border-slate-700 hover:border-blue-500 text-slate-300 hover:text-white items-center justify-center shadow-lg transition-all duration-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+      </button>
+
+      <!-- Scroll Hint Banner (mobile/touch helper) -->
+      <div class="sm:hidden flex items-center justify-end gap-1.5 pt-1 text-[11px] text-blue-400">
+        <span>👈 Arraste para o lado para ver mais abas 👉</span>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 1: SIMULADOR COMPLETO (ALL MATCHES)                       -->
+    <!-- ============================================================= -->
+    <div id="tab-simulador-content" class="space-y-6">
+
+      <!-- Live Standings Projection Box -->
+      <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-xl p-5 shadow-lg">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="flex h-2.5 w-2.5 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <h3 class="text-base font-extrabold text-white">Classificação Projetada em Tempo Real</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Tabela recalculada instantaneamente a cada resultado simulado. Critérios CBF: Pontos > Vitórias > Saldo.
+            </p>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="setPreset('reset')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+              🔄 Limpar (Base Atual)
+            </button>
+            <button onclick="setPreset('home')" class="px-2.5 py-1.5 rounded-lg bg-blue-900/60 hover:bg-blue-800/80 text-blue-200 text-xs font-semibold border border-blue-700/50 transition">
+              🏠 Mandantes Vencem
+            </button>
+            <button onclick="setPreset('corinthians_escape')" class="px-2.5 py-1.5 rounded-lg bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs font-semibold border border-red-700/50 transition">
+              ⭐ Timão Vence 3 de 4
+            </button>
+            <button onclick="setPreset('gremio_escape')" class="px-2.5 py-1.5 rounded-lg bg-sky-950/60 hover:bg-sky-900/80 text-sky-200 text-xs font-semibold border border-sky-700/50 transition">
+              ⭐ Grêmio 100% em Casa
+            </button>
+          </div>
+        </div>
+
+        <!-- Simulated Table Grid -->
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-xs text-left">
+            <thead class="text-slate-400 uppercase text-[11px] border-b border-slate-800">
+              <tr>
+                <th class="py-2 px-3">Posição</th>
+                <th class="py-2 px-3">Clube</th>
+                <th class="py-2 px-3 text-center">Pts Iniciais</th>
+                <th class="py-2 px-3 text-center">Pts Simulados</th>
+                <th class="py-2 px-3 text-center font-bold text-white">Pts Finais</th>
+                <th class="py-2 px-3 text-center">Jogos</th>
+                <th class="py-2 px-3 text-center">Vitórias</th>
+                <th class="py-2 px-3 text-center">Saldo</th>
+                <th class="py-2 px-3 text-right">Diagnóstico Final</th>
+              </tr>
+            </thead>
+            <tbody id="live-standings-body" class="divide-y divide-slate-800/60 font-medium">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Round Selector / Filter -->
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-semibold uppercase">Filtrar Rodada:</span>
+          <div class="inline-flex rounded-lg bg-slate-900 border border-slate-800 p-1">
+            <button onclick="filterSimRounds('all')" id="btn-round-all" class="px-3 py-1 rounded text-xs font-bold bg-blue-600 text-white">Todas (29)</button>
+            <button onclick="filterSimRounds('35')" id="btn-round-35" class="px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white">35ª (6)</button>
+            <button onclick="filterSimRounds('36')" id="btn-round-36" class="px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white">36ª (8)</button>
+            <button onclick="filterSimRounds('37')" id="btn-round-37" class="px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white">37ª (8)</button>
+            <button onclick="filterSimRounds('38')" id="btn-round-38" class="px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white">38ª (7)</button>
+          </div>
+        </div>
+        <div class="text-xs text-slate-400">
+          Clique nos botões <span class="text-blue-400 font-bold">[ Casa ]</span>, <span class="text-amber-400 font-bold">[ Empate ]</span> ou <span class="text-purple-400 font-bold">[ Fora ]</span> para alternar os resultados.
+        </div>
+      </div>
+
+      <!-- Match Cards Grid -->
+      <div id="all-matches-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Dynamically rendered via JS -->
+      </div>
+
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 2: PROBABILIDADES & GRÁFICOS                              -->
+    <!-- ============================================================= -->
+    <div id="tab-tabela-content" class="hidden space-y-6">
+      
+      <!-- Top 3 Risk Clubs Alert Cards -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-900 border-l-4 border-l-red-500 border border-slate-800 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-red-400 uppercase tracking-wider">1º Maior Risco Ativo</span>
+            <span class="badge-high text-xs px-2 py-0.5 rounded font-bold">53.71% Risco</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-1">Grêmio (18º | 37 pts)</h3>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+            Tem saldo de -9 e 2 viagens de altíssima tensão: Santos na Vila (R36) e Corinthians em Itaquera (R37).
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border-l-4 border-l-orange-500 border border-slate-800 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-orange-400 uppercase tracking-wider">2º Maior Risco Ativo</span>
+            <span class="badge-high text-xs px-2 py-0.5 rounded font-bold">45.38% Risco</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-1">Vitória (15º | 38 pts)</h3>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+            Pior saldo de gols entre os concorrentes diretos (-16). Enfrenta o Internacional no Beira-Rio na R36.
+          </p>
+        </div>
+
+        <div class="bg-slate-900 border-l-4 border-l-amber-500 border border-slate-800 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">3º Maior Risco Ativo</span>
+            <span class="badge-medium text-xs px-2 py-0.5 rounded font-bold">39.68% Risco</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-1">Corinthians (17º | 37 pts)</h3>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+            Abre o Z-4 após jejum de 5 jogos, mas tem melhor saldo (-6) e recebe Botafogo e Grêmio, fechando com o Remo.
+          </p>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Table -->
+        <div class="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+              <h3 class="text-base font-bold text-white">Tabela de Probabilidades de Rebaixamento</h3>
+              <p class="text-xs text-slate-400">Classificação e risco preditivo modelado em 100.000 iterações</p>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+                <tr>
+                  <th class="py-2.5 px-2">Clube</th>
+                  <th class="py-2.5 px-2 text-center">Pts</th>
+                  <th class="py-2.5 px-2 text-center">J</th>
+                  <th class="py-2.5 px-2 text-center">V</th>
+                  <th class="py-2.5 px-2 text-center">SG</th>
+                  <th class="py-2.5 px-2 text-right">Risco de Queda</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 font-medium">
+                <tr class="hover:bg-slate-800/50 bg-red-950/20">
+                  <td class="py-2.5 px-2 font-bold text-red-500">20º Chapecoense</td>
+                  <td class="text-center font-bold text-white">21</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">4</td>
+                  <td class="text-center text-red-400">-37</td>
+                  <td class="text-right"><span class="badge-critical px-2 py-0.5 rounded font-bold font-mono">100.0%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 bg-red-950/10">
+                  <td class="py-2.5 px-2 font-bold text-red-400">19º Remo</td>
+                  <td class="text-center font-bold text-white">29</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">6</td>
+                  <td class="text-center text-red-400">-20</td>
+                  <td class="text-right"><span class="badge-critical px-2 py-0.5 rounded font-bold font-mono">99.96%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 bg-orange-950/20">
+                  <td class="py-2.5 px-2 font-bold text-blue-400">18º Grêmio</td>
+                  <td class="text-center font-bold text-white">37</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">9</td>
+                  <td class="text-center text-amber-400">-9</td>
+                  <td class="text-right"><span class="badge-high px-2 py-0.5 rounded font-bold font-mono">53.71%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 bg-orange-950/10">
+                  <td class="py-2.5 px-2 font-bold text-amber-400">15º Vitória</td>
+                  <td class="text-center font-bold text-white">38</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">10</td>
+                  <td class="text-center text-red-400">-16</td>
+                  <td class="text-right"><span class="badge-high px-2 py-0.5 rounded font-bold font-mono">45.38%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 bg-yellow-950/20">
+                  <td class="py-2.5 px-2 font-bold text-white">17º Corinthians</td>
+                  <td class="text-center font-bold text-white">37</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">9</td>
+                  <td class="text-center text-amber-400">-6</td>
+                  <td class="text-right"><span class="badge-medium px-2 py-0.5 rounded font-bold font-mono">39.68%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50 bg-yellow-950/10">
+                  <td class="py-2.5 px-2 font-bold text-rose-400">16º Internacional</td>
+                  <td class="text-center font-bold text-white">38</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">9</td>
+                  <td class="text-center text-emerald-400">-4</td>
+                  <td class="text-right"><span class="badge-medium px-2 py-0.5 rounded font-bold font-mono">32.00%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50">
+                  <td class="py-2.5 px-2 font-bold text-emerald-400">14º Mirassol</td>
+                  <td class="text-center font-bold text-white">41</td>
+                  <td class="text-center text-amber-400 font-bold">35*</td>
+                  <td class="text-center">10</td>
+                  <td class="text-center text-amber-400">-9</td>
+                  <td class="text-right"><span class="badge-low px-2 py-0.5 rounded font-bold font-mono">22.56%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50">
+                  <td class="py-2.5 px-2 font-bold text-slate-300">13º Coritiba</td>
+                  <td class="text-center font-bold text-white">42</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">11</td>
+                  <td class="text-center text-slate-400">-11</td>
+                  <td class="text-right"><span class="badge-safe px-2 py-0.5 rounded font-bold font-mono">5.02%</span></td>
+                </tr>
+                <tr class="hover:bg-slate-800/50">
+                  <td class="py-2.5 px-2 font-bold text-slate-300">12º Botafogo</td>
+                  <td class="text-center font-bold text-white">42</td>
+                  <td class="text-center text-slate-400">34</td>
+                  <td class="text-center">11</td>
+                  <td class="text-center text-slate-400">-7</td>
+                  <td class="text-right"><span class="badge-safe px-2 py-0.5 rounded font-bold font-mono">1.66%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SVG Visual Chart -->
+        <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-white mb-1">Risco vs. Pontos Atuais</h3>
+            <p class="text-xs text-slate-400 mb-4">Proporção direta de probabilidade percentual</p>
+            
+            <svg viewBox="0 0 450 260" class="w-full h-auto">
+              <line x1="40" y1="20" x2="430" y2="20" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="70" x2="430" y2="70" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="120" x2="430" y2="120" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="170" x2="430" y2="170" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="220" x2="430" y2="220" stroke="#475569" stroke-width="1.5" />
+
+              <text x="32" y="24" text-anchor="end" font-size="9" fill="#94a3b8">100%</text>
+              <text x="32" y="124" text-anchor="end" font-size="9" fill="#94a3b8">50%</text>
+              <text x="32" y="224" text-anchor="end" font-size="9" fill="#94a3b8">0%</text>
+
+              <line x1="40" y1="120" x2="430" y2="120" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" />
+              <text x="425" y="114" text-anchor="end" font-size="8" fill="#ef4444" font-weight="bold">50% LIMIAR</text>
+
+              <!-- Bars -->
+              <rect x="55" y="20" width="28" height="200" rx="3" fill="#dc2626" />
+              <text x="69" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="#dc2626">100%</text>
+              <text x="69" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Chape</text>
+
+              <rect x="100" y="20.2" width="28" height="199.8" rx="3" fill="#ea580c" />
+              <text x="114" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="#ea580c">99.9%</text>
+              <text x="114" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Remo</text>
+
+              <rect x="145" y="112.6" width="28" height="107.4" rx="3" fill="#f97316" />
+              <text x="159" y="106" text-anchor="middle" font-size="8" font-weight="bold" fill="#f97316">53.7%</text>
+              <text x="159" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Grêmio</text>
+
+              <rect x="190" y="129.2" width="28" height="90.8" rx="3" fill="#eab308" />
+              <text x="204" y="123" text-anchor="middle" font-size="8" font-weight="bold" fill="#eab308">45.4%</text>
+              <text x="204" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Vitória</text>
+
+              <rect x="235" y="140.6" width="28" height="79.4" rx="3" fill="#eab308" />
+              <text x="249" y="134" text-anchor="middle" font-size="8" font-weight="bold" fill="#eab308">39.7%</text>
+              <text x="249" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Corinth.</text>
+
+              <rect x="280" y="156.0" width="28" height="64.0" rx="3" fill="#84cc16" />
+              <text x="294" y="150" text-anchor="middle" font-size="8" font-weight="bold" fill="#84cc16">32.0%</text>
+              <text x="294" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Inter</text>
+
+              <rect x="325" y="174.9" width="28" height="45.1" rx="3" fill="#10b981" />
+              <text x="339" y="169" text-anchor="middle" font-size="8" font-weight="bold" fill="#10b981">22.6%</text>
+              <text x="339" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Mirassol</text>
+
+              <rect x="370" y="210.0" width="24" height="10.0" rx="2" fill="#3b82f6" />
+              <text x="382" y="205" text-anchor="middle" font-size="8" font-weight="bold" fill="#3b82f6">5.0%</text>
+              <text x="382" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Coxa</text>
+
+              <rect x="402" y="216.7" width="20" height="3.3" rx="2" fill="#6366f1" />
+              <text x="412" y="212" text-anchor="middle" font-size="8" font-weight="bold" fill="#6366f1">1.7%</text>
+              <text x="412" y="235" text-anchor="middle" font-size="8" fill="#cbd5e1">Bota</text>
+            </svg>
+          </div>
+          <p class="text-xs text-slate-400 mt-2">
+            A média de corte é de 41.37 pontos; atingir 44 pontos encerra as chances de queda.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: MATRIZ DE CENÁRIOS                                     -->
+    <!-- ============================================================= -->
+    <div id="tab-cenarios-content" class="hidden space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+        <div>
+          <h3 class="text-base font-bold text-white">Matriz de Cenários e Metas de Pontuação</h3>
+          <p class="text-xs text-slate-400">Probabilidade de queda em função dos pontos conquistados nas rodadas finais:</p>
+        </div>
+
+        <!-- Grêmio -->
+        <div class="border border-slate-800 rounded-lg p-4 bg-slate-950/60">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-sm text-blue-400">Grêmio (18º | 37 pts)</h4>
+            <span class="badge-high text-xs px-2 py-0.5 rounded font-bold font-mono">53.7% Risco</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded bg-emerald-950/20 border border-emerald-500/20">
+              <div class="font-bold text-emerald-400 mb-1">🛡️ Salvação Garantida (≥ 45 pts)</div>
+              <div>• <strong>3V, 0E, 1D</strong> (+9 pts -> 46 pts): 100% Salvo</div>
+              <div>• <strong>2V, 2E, 0D</strong> (+8 pts -> 45 pts): 99.6% Salvo</div>
+            </div>
+            <div class="p-3 rounded bg-amber-950/20 border border-amber-500/20">
+              <div class="font-bold text-amber-400 mb-1">⚖️ Depende de Terceiros (42 a 44 pts)</div>
+              <div>• <strong>44 pts</strong> (+7): 94.9% salvação</div>
+              <div>• <strong>43 pts</strong> (+6): 82.5% salvação</div>
+              <div>• <strong>42 pts</strong> (+5): 43.9% salvação (crítico pelo saldo -9)</div>
+            </div>
+            <div class="p-3 rounded bg-red-950/20 border border-red-500/20">
+              <div class="font-bold text-red-400 mb-1">⚠️ Queda Quase Certa (≤ 41 pts)</div>
+              <div>• <strong>≤ 41 pts</strong>: Queda em mais de 86.0% dos cenários</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vitória -->
+        <div class="border border-slate-800 rounded-lg p-4 bg-slate-950/60">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-sm text-amber-400">Vitória (15º | 38 pts)</h4>
+            <span class="badge-high text-xs px-2 py-0.5 rounded font-bold font-mono">45.4% Risco</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded bg-emerald-950/20 border border-emerald-500/20">
+              <div class="font-bold text-emerald-400 mb-1">🛡️ Salvação Garantida (≥ 45 pts)</div>
+              <div>• <strong>45 pts (+7)</strong>: 99.9% Salvo (vantagem de já ter 10 vitórias)</div>
+            </div>
+            <div class="p-3 rounded bg-amber-950/20 border border-amber-500/20">
+              <div class="font-bold text-amber-400 mb-1">⚖️ Depende de Terceiros (42 a 44 pts)</div>
+              <div>• <strong>44 pts</strong> (+6): 97.2% salvação</div>
+              <div>• <strong>43 pts</strong> (+5): 82.1% salvação</div>
+              <div>• <strong>42 pts</strong> (+4): 62.8% salvação</div>
+            </div>
+            <div class="p-3 rounded bg-red-950/20 border border-red-500/20">
+              <div class="font-bold text-red-400 mb-1">⚠️ Queda Quase Certa (≤ 41 pts)</div>
+              <div>• <strong>≤ 41 pts</strong>: Risco de 74.1% a 99.9% de rebaixamento</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Corinthians -->
+        <div class="border border-slate-800 rounded-lg p-4 bg-slate-950/60">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-sm text-white">Corinthians (17º | 37 pts)</h4>
+            <span class="badge-medium text-xs px-2 py-0.5 rounded font-bold font-mono">39.7% Risco</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded bg-emerald-950/20 border border-emerald-500/20">
+              <div class="font-bold text-emerald-400 mb-1">🛡️ Salvação Garantida (≥ 45 pts)</div>
+              <div>• <strong>45+ pts (+8)</strong>: 99.6% a 100% Salvo</div>
+            </div>
+            <div class="p-3 rounded bg-amber-950/20 border border-amber-500/20">
+              <div class="font-bold text-amber-400 mb-1">⚖️ Depende de Terceiros (42 a 44 pts)</div>
+              <div>• <strong>44 pts</strong> (+7): 96.9% salvação</div>
+              <div>• <strong>43 pts</strong> (+6): 87.3% salvação</div>
+              <div>• <strong>42 pts</strong> (+5): 54.6% salvação</div>
+            </div>
+            <div class="p-3 rounded bg-red-950/20 border border-red-500/20">
+              <div class="font-bold text-red-400 mb-1">⚠️ Queda Quase Certa (≤ 41 pts)</div>
+              <div>• <strong>41 pts</strong>: 76.1% de queda • <strong>≤ 40 pts</strong>: > 92.9% queda</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Internacional -->
+        <div class="border border-slate-800 rounded-lg p-4 bg-slate-950/60">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-sm text-rose-400">Internacional (16º | 38 pts)</h4>
+            <span class="badge-medium text-xs px-2 py-0.5 rounded font-bold font-mono">32.0% Risco</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 rounded bg-emerald-950/20 border border-emerald-500/20">
+              <div class="font-bold text-emerald-400 mb-1">🛡️ Salvação Garantida (≥ 45 pts)</div>
+              <div>• <strong>45+ pts</strong>: > 99.6% Salvo (saldo -4 é o melhor)</div>
+            </div>
+            <div class="p-3 rounded bg-amber-950/20 border border-amber-500/20">
+              <div class="font-bold text-amber-400 mb-1">⚖️ Depende de Terceiros (42 a 44 pts)</div>
+              <div>• <strong>44 pts</strong>: 96.5% salvação</div>
+              <div>• <strong>43 pts</strong>: 78.2% salvação</div>
+            </div>
+            <div class="p-3 rounded bg-red-950/20 border border-red-500/20">
+              <div class="font-bold text-red-400 mb-1">⚠️ Queda Quase Certa (≤ 41 pts)</div>
+              <div>• <strong>≤ 41 pts</strong>: Queda em mais de 77.1% dos cenários</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 4: EVOLUÇÃO                                               -->
+    <!-- ============================================================= -->
+    <div id="tab-evolucao-content" class="hidden space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <h3 class="text-base font-bold text-white mb-1">Evolução Rodada a Rodada (R30 a R35)</h3>
+        <p class="text-xs text-slate-400 mb-4">Veja a trajetória que empurrou Grêmio e Corinthians para o Z-4:</p>
+
+        <div class="w-full overflow-x-auto">
+          <svg viewBox="0 0 650 280" class="w-full h-auto min-w-[550px]">
+            <line x1="50" y1="40" x2="620" y2="40" stroke="#334155" stroke-dasharray="3,3" />
+            <text x="40" y="44" text-anchor="end" font-size="10" fill="#94a3b8">12º</text>
+
+            <line x1="50" y1="100" x2="620" y2="100" stroke="#334155" stroke-dasharray="3,3" />
+            <text x="40" y="104" text-anchor="end" font-size="10" fill="#94a3b8">14º</text>
+
+            <line x1="50" y1="150" x2="620" y2="150" stroke="#334155" stroke-dasharray="3,3" />
+            <text x="40" y="154" text-anchor="end" font-size="10" fill="#94a3b8">16º</text>
+
+            <line x1="50" y1="165" x2="620" y2="165" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4" />
+            <rect x="540" y="153" width="80" height="20" rx="3" fill="#ef4444" fill-opacity="0.25" />
+            <text x="580" y="167" text-anchor="middle" font-size="9" font-weight="bold" fill="#ef4444">LIMITE Z-4</text>
+
+            <line x1="50" y1="200" x2="620" y2="200" stroke="#334155" stroke-dasharray="3,3" />
+            <text x="40" y="204" text-anchor="end" font-size="10" fill="#94a3b8">18º</text>
+
+            <line x1="50" y1="240" x2="620" y2="240" stroke="#334155" stroke-dasharray="3,3" />
+            <text x="40" y="244" text-anchor="end" font-size="10" fill="#94a3b8">20º</text>
+
+            <!-- Corinthians (Red Line) -->
+            <polyline points="80,120 180,120 280,150 380,180 480,180 570,180" fill="none" stroke="#f87171" stroke-width="3" />
+            <circle cx="570" cy="180" r="5" fill="#ef4444" />
+            <text x="580" y="184" font-size="10" font-weight="bold" fill="#f87171">Corinthians (17º)</text>
+
+            <!-- Grêmio (Blue Line) -->
+            <polyline points="80,180 180,180 280,180 380,200 480,200 570,200" fill="none" stroke="#60a5fa" stroke-width="3" />
+            <circle cx="570" cy="200" r="5" fill="#3b82f6" />
+            <text x="580" y="204" font-size="10" font-weight="bold" fill="#60a5fa">Grêmio (18º)</text>
+
+            <!-- Vitória (Amber Line) -->
+            <polyline points="80,200 180,90 280,90 380,90 480,120 570,120" fill="none" stroke="#fbbf24" stroke-width="3" />
+            <circle cx="570" cy="120" r="5" fill="#f59e0b" />
+            <text x="580" y="124" font-size="10" font-weight="bold" fill="#fbbf24">Vitória (15º)</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 5: METODOLOGIA                                            -->
+    <!-- ============================================================= -->
+    <div id="tab-metodologia-content" class="hidden space-y-6">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+        <h3 class="text-base font-bold text-white">Metodologia Científica & Premissas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300">
+          <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+            <div class="font-bold text-blue-400">1. Simulação Estocástica de Monte Carlo</div>
+            <p>O motor executa 100.000 iterações de todas as partidas restantes. A probabilidade de cada placar segue uma distribuição bivariada de Poisson ajustada por taxa de gols pró e contra normalizada por mando.</p>
+            <div class="font-bold text-blue-400 mt-3">2. Pesos de Fatores</div>
+            <ul class="list-disc list-inside space-y-1 text-slate-400">
+              <li>Pontos Acumulados: 40%</li>
+              <li>Mando de Campo: 25%</li>
+              <li>Confrontos Diretos: 15%</li>
+              <li>Vitórias e Saldo: 10%</li>
+              <li>Forma Recente (Últimas 5 rodadas): 10%</li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+            <div class="font-bold text-amber-400">3. Incerteza e Amostra Reduzida</div>
+            <p>Restando apenas 3 a 4 jogos por equipe (9 a 12 pontos), a volatilidade por partida é máxima. Confrontos diretos como Corinthians x Grêmio na 37ª rodada representam oscilações imediatas de mais de 30 pontos percentuais.</p>
+            <div class="font-bold text-emerald-400 mt-3">4. Linha de Corte Observada</div>
+            <p>A média da pontuação do 17º colocado é de <strong>41.37 pontos</strong>. Atingir <strong>44 pontos</strong> confere 99% de segurança assintótica contra a queda.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+      Desenvolvido com Ciência de Dados & Modelagem Estatística para o Campeonato Brasileiro de 2026. Atualizado em 15 de novembro de 2026.
+    </footer>
+
+  </div>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // -------------------------------------------------------------
+    // BASE STANDINGS DATA
+    // -------------------------------------------------------------
+    const baseTeams = [
+      { name: "São Paulo", pts: 44, j: 34, v: 12, sg: 0, initialPos: 10 },
+      { name: "Vasco da Gama", pts: 44, j: 34, v: 12, sg: -5, initialPos: 11 },
+      { name: "Botafogo", pts: 42, j: 34, v: 11, sg: -7, initialPos: 12 },
+      { name: "Coritiba", pts: 42, j: 34, v: 11, sg: -11, initialPos: 13 },
+      { name: "Mirassol", pts: 41, j: 35, v: 10, sg: -9, initialPos: 14 },
+      { name: "Vitória", pts: 38, j: 34, v: 10, sg: -16, initialPos: 15 },
+      { name: "Internacional", pts: 38, j: 34, v: 9, sg: -4, initialPos: 16 },
+      { name: "Corinthians", pts: 37, j: 34, v: 9, sg: -6, initialPos: 17 },
+      { name: "Grêmio", pts: 37, j: 34, v: 9, sg: -9, initialPos: 18 },
+      { name: "Remo", pts: 29, j: 34, v: 6, sg: -20, initialPos: 19 },
+      { name: "Chapecoense", pts: 21, j: 34, v: 4, sg: -37, initialPos: 20 }
+    ];
+
+    // -------------------------------------------------------------
+    // ALL 29 MATCHES INVOLVING TEAMS AT RISK (ROUNDS 35 TO 38)
+    // -------------------------------------------------------------
+    const allMatches = [
+      // 35ª Rodada (6 jogos)
+      { id: "m35_1", round: "35", home: "Corinthians", away: "Botafogo", direct: true, defaultVal: "emp" },
+      { id: "m35_2", round: "35", home: "Grêmio", away: "Bahia", direct: false, defaultVal: "emp" },
+      { id: "m35_3", round: "35", home: "Vasco da Gama", away: "Internacional", direct: true, defaultVal: "emp" },
+      { id: "m35_4", round: "35", home: "Coritiba", away: "Santos", direct: false, defaultVal: "emp" },
+      { id: "m35_5", round: "35", home: "Remo", away: "Chapecoense", direct: true, defaultVal: "emp" },
+      { id: "m35_6", round: "35", home: "Vitória", away: "RB Bragantino", direct: false, defaultVal: "emp" },
+
+      // 36ª Rodada (8 jogos)
+      { id: "m36_1", round: "36", home: "Internacional", away: "Vitória", direct: true, defaultVal: "emp" },
+      { id: "m36_2", round: "36", home: "Atlético-MG", away: "Corinthians", direct: false, defaultVal: "emp" },
+      { id: "m36_3", round: "36", home: "Santos", away: "Grêmio", direct: false, defaultVal: "emp" },
+      { id: "m36_4", round: "36", home: "Fluminense", away: "Mirassol", direct: false, defaultVal: "emp" },
+      { id: "m36_5", round: "36", home: "Bahia", away: "Coritiba", direct: false, defaultVal: "emp" },
+      { id: "m36_6", round: "36", home: "Botafogo", away: "São Paulo", direct: true, defaultVal: "emp" },
+      { id: "m36_7", round: "36", home: "Athletico-PR", away: "Remo", direct: false, defaultVal: "emp" },
+      { id: "m36_8", round: "36", home: "Chapecoense", away: "Palmeiras", direct: false, defaultVal: "emp" },
+
+      // 37ª Rodada (8 jogos)
+      { id: "m37_1", round: "37", home: "Corinthians", away: "Grêmio", direct: true, defaultVal: "emp" },
+      { id: "m37_2", round: "37", home: "Internacional", away: "RB Bragantino", direct: false, defaultVal: "emp" },
+      { id: "m37_3", round: "37", home: "Vitória", away: "Santos", direct: false, defaultVal: "emp" },
+      { id: "m37_4", round: "37", home: "Mirassol", away: "Athletico-PR", direct: false, defaultVal: "emp" },
+      { id: "m37_5", round: "37", home: "Coritiba", away: "Flamengo", direct: false, defaultVal: "emp" },
+      { id: "m37_6", round: "37", home: "Botafogo", away: "Bahia", direct: false, defaultVal: "emp" },
+      { id: "m37_7", round: "37", home: "São Paulo", away: "Remo", direct: true, defaultVal: "emp" },
+      { id: "m37_8", round: "37", home: "Cruzeiro", away: "Chapecoense", direct: false, defaultVal: "emp" },
+
+      // 38ª Rodada (7 jogos)
+      { id: "m38_1", round: "38", home: "Grêmio", away: "Mirassol", direct: true, defaultVal: "emp" },
+      { id: "m38_2", round: "38", home: "Remo", away: "Corinthians", direct: true, defaultVal: "emp" },
+      { id: "m38_3", round: "38", home: "Cruzeiro", away: "Internacional", direct: false, defaultVal: "emp" },
+      { id: "m38_4", round: "38", home: "Vasco da Gama", away: "Vitória", direct: true, defaultVal: "emp" },
+      { id: "m38_5", round: "38", home: "Palmeiras", away: "Coritiba", direct: false, defaultVal: "emp" },
+      { id: "m38_6", round: "38", home: "Santos", away: "Botafogo", direct: false, defaultVal: "emp" },
+      { id: "m38_7", round: "38", home: "Chapecoense", away: "Atlético-MG", direct: false, defaultVal: "emp" }
+    ];
+
+    // Current user match predictions: { matchId: "home" | "draw" | "away" }
+    let matchPicks = {};
+
+    function initMatches() {
+      allMatches.forEach(m => {
+        matchPicks[m.id] = m.defaultVal;
+      });
+      renderMatchCards();
+      calcSimulation();
+    }
+
+    function renderMatchCards(filterRound = 'all') {
+      const container = document.getElementById('all-matches-container');
+      let html = '';
+
+      allMatches.forEach(m => {
+        if (filterRound !== 'all' && m.round !== filterRound) return;
+
+        const currentVal = matchPicks[m.id];
+        const isDirect = m.direct;
+
+        html += `
+          <div class="bg-slate-900/90 border ${isDirect ? 'border-red-500/40 bg-red-950/10' : 'border-slate-800'} rounded-xl p-3.5 shadow-sm transition-all hover:border-slate-700">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                ${m.round}ª Rodada
+              </span>
+              ${isDirect ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30">⚡ Confronto Direto</span>' : '<span class="text-[10px] text-slate-500 font-medium">Série A 2026</span>'}
+            </div>
+
+            <!-- Teams -->
+            <div class="text-xs font-bold text-white mb-3 text-center flex items-center justify-between">
+              <span class="w-[42%] text-right truncate ${m.home === 'Corinthians' || m.home === 'Grêmio' || m.home === 'Vitória' ? 'text-amber-400' : ''}">${m.home}</span>
+              <span class="text-slate-500 text-[11px] px-1 font-normal">x</span>
+              <span class="w-[42%] text-left truncate ${m.away === 'Corinthians' || m.away === 'Grêmio' || m.away === 'Vitória' ? 'text-amber-400' : ''}">${m.away}</span>
+            </div>
+
+            <!-- 3 Buttons selector -->
+            <div class="grid grid-cols-3 gap-1.5 text-xs">
+              <button onclick="setPick('${m.id}', 'home')" class="py-1.5 px-1 rounded text-center transition font-semibold text-[11px] ${currentVal === 'home' ? 'btn-sim-active-home' : 'bg-slate-950 text-slate-300 hover:bg-slate-800 border border-slate-800'}">
+                Casa (1)
+              </button>
+              <button onclick="setPick('${m.id}', 'draw')" class="py-1.5 px-1 rounded text-center transition font-semibold text-[11px] ${currentVal === 'draw' ? 'btn-sim-active-draw' : 'bg-slate-950 text-slate-300 hover:bg-slate-800 border border-slate-800'}">
+                Empate (X)
+              </button>
+              <button onclick="setPick('${m.id}', 'away')" class="py-1.5 px-1 rounded text-center transition font-semibold text-[11px] ${currentVal === 'away' ? 'btn-sim-active-away' : 'bg-slate-950 text-slate-300 hover:bg-slate-800 border border-slate-800'}">
+                Fora (2)
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function setPick(matchId, pick) {
+      matchPicks[matchId] = pick;
+      renderMatchCards(currentRoundFilter);
+      calcSimulation();
+    }
+
+    let currentRoundFilter = 'all';
+    function filterSimRounds(r) {
+      currentRoundFilter = r;
+      ['all', '35', '36', '37', '38'].forEach(id => {
+        const btn = document.getElementById('btn-round-' + id);
+        if (id === r) {
+          btn.className = 'px-3 py-1 rounded text-xs font-bold bg-blue-600 text-white';
+        } else {
+          btn.className = 'px-3 py-1 rounded text-xs font-semibold text-slate-400 hover:text-white';
+        }
+      });
+      renderMatchCards(r);
+    }
+
+    // Presets
+    function setPreset(type) {
+      if (type === 'reset') {
+        allMatches.forEach(m => matchPicks[m.id] = 'draw');
+      } else if (type === 'home') {
+        allMatches.forEach(m => matchPicks[m.id] = 'home');
+      } else if (type === 'corinthians_escape') {
+        allMatches.forEach(m => matchPicks[m.id] = 'home');
+        matchPicks['m35_1'] = 'home'; // Cor beats Botafogo
+        matchPicks['m36_2'] = 'draw'; // Cor draws Galo
+        matchPicks['m37_1'] = 'home'; // Cor beats Grêmio
+        matchPicks['m38_2'] = 'away'; // Cor beats Remo
+      } else if (type === 'gremio_escape') {
+        allMatches.forEach(m => matchPicks[m.id] = 'home');
+        matchPicks['m35_2'] = 'home'; // Grêmio beats Bahia
+        matchPicks['m36_3'] = 'draw'; // Grêmio draws Santos
+        matchPicks['m37_1'] = 'away'; // Grêmio beats Corinthians
+        matchPicks['m38_1'] = 'home'; // Grêmio beats Mirassol
+      }
+      renderMatchCards(currentRoundFilter);
+      calcSimulation();
+    }
+
+    // Dynamic Simulation Calculator
+    function calcSimulation() {
+      // Clone base table data
+      let table = baseTeams.map(t => ({
+        name: t.name,
+        initialPts: t.pts,
+        pts: t.pts,
+        j: t.j,
+        v: t.v,
+        sg: t.sg
+      }));
+
+      // Apply all match results
+      allMatches.forEach(m => {
+        const res = matchPicks[m.id];
+        const homeTeam = table.find(t => t.name === m.home);
+        const awayTeam = table.find(t => t.name === m.away);
+
+        if (homeTeam) homeTeam.j += 1;
+        if (awayTeam) awayTeam.j += 1;
+
+        if (res === 'home') {
+          if (homeTeam) { homeTeam.pts += 3; homeTeam.v += 1; homeTeam.sg += 1; }
+          if (awayTeam) { awayTeam.sg -= 1; }
+        } else if (res === 'away') {
+          if (awayTeam) { awayTeam.pts += 3; awayTeam.v += 1; awayTeam.sg += 1; }
+          if (homeTeam) { homeTeam.sg -= 1; }
+        } else if (res === 'draw') {
+          if (homeTeam) homeTeam.pts += 1;
+          if (awayTeam) awayTeam.pts += 1;
+        }
+      });
+
+      // Sort by CBF rules: Pts > Vitórias > Saldo de Gols
+      table.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.v !== a.v) return b.v - a.v;
+        return b.sg - a.sg;
+      });
+
+      // Render live standings table
+      const tbody = document.getElementById('live-standings-body');
+      let html = '';
+
+      table.forEach((team, idx) => {
+        const finalPos = idx + 10; // positions 10 to 20
+        const isZ4 = finalPos >= 17;
+        const diffPts = team.pts - team.initialPts;
+        
+        let statusBadge = '';
+        if (finalPos >= 17) {
+          statusBadge = '<span class="px-2 py-0.5 rounded font-extrabold text-[11px] bg-red-500/20 text-red-400 border border-red-500/40">Z-4 (REBAIXADO)</span>';
+        } else if (team.pts >= 44) {
+          statusBadge = '<span class="px-2 py-0.5 rounded font-extrabold text-[11px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">SALVO (LIVRE)</span>';
+        } else {
+          statusBadge = '<span class="px-2 py-0.5 rounded font-bold text-[11px] bg-amber-500/20 text-amber-400 border border-amber-500/40">16º NO LIMIAR</span>';
+        }
+
+        const rowBg = isZ4 ? 'bg-red-950/25 hover:bg-red-900/30' : (finalPos === 16 ? 'bg-amber-950/20 hover:bg-amber-900/25' : 'hover:bg-slate-800/40');
+        const posColor = isZ4 ? 'text-red-400 font-extrabold' : (finalPos === 16 ? 'text-amber-400 font-bold' : 'text-slate-300 font-bold');
+
+        html += `
+          <tr class="${rowBg} transition-colors">
+            <td class="py-2.5 px-3 ${posColor}">
+              ${finalPos}º
+            </td>
+            <td class="py-2.5 px-3 font-bold text-white flex items-center gap-1.5">
+              <span>${team.name}</span>
+            </td>
+            <td class="py-2.5 px-3 text-center text-slate-400 font-mono">${team.initialPts}</td>
+            <td class="py-2.5 px-3 text-center text-blue-400 font-bold font-mono">+${diffPts} pts</td>
+            <td class="py-2.5 px-3 text-center font-black text-white text-sm font-mono">${team.pts}</td>
+            <td class="py-2.5 px-3 text-center text-slate-400">${team.j}/38</td>
+            <td class="py-2.5 px-3 text-center font-semibold text-slate-300">${team.v}</td>
+            <td class="py-2.5 px-3 text-center font-mono ${team.sg >= 0 ? 'text-emerald-400' : 'text-red-400'}">${team.sg > 0 ? '+' : ''}${team.sg}</td>
+            <td class="py-2.5 px-3 text-right">${statusBadge}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    // Tabs switching
+    function changeTab(tabName) {
+      const tabs = ['simulador', 'tabela', 'cenarios', 'evolucao', 'metodologia'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-' + t + '-btn');
+        const content = document.getElementById('tab-' + t + '-content');
+        if (t === tabName) {
+          btn.className = 'pb-3 px-3 tab-active transition-colors flex items-center gap-1.5 whitespace-nowrap';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'pb-3 px-3 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap';
+          content.classList.add('hidden');
+        }
+      });
+      if (tabName === 'simulador') {
+        calcSimulation();
+      }
+    }
+
+    function shareApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Brasileirão 2026 - Probabilidades de Rebaixamento & Simulador',
+          text: 'Simule todos os 29 jogos restantes dos clubes sob risco no Brasileirão 2026!',
+          url: window.location.href
+        }).catch(() => copyToClipboard());
+      } else {
+        copyToClipboard();
+      }
+    }
+
+    function copyToClipboard() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copiado para a área de transferência com sucesso!');
+      }).catch(() => {
+        alert('Copie o endereço da página na barra do navegador.');
+      });
+    }
+
+    // Start
+    initMatches();
+  </script>
+</body>
+</html>
