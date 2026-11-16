@@ -6,6 +6,7 @@ Aplicação web completa e interativa para análise preditiva, cálculo probabil
 
 ## 🚀 Como usar a Aplicação
 
+https://analise-br26-rebaixamento.netlify.app/
 
 ### : Aplicação Web Standalone (Sem Necessidade de Python)
 * **Arquivo:** [`index.html`](index.html)
